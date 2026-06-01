@@ -3,63 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Models\Artwork;
+use App\Http\Resources\ArtworkResource;
 use Illuminate\Http\Request;
 
 class ArtworkController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the published artworks.
      */
     public function index()
     {
-        //
+        // Only return published artworks, and paginate them for mobile performance
+        $artworks = Artwork::where('is_published', true)
+            ->latest()
+            ->paginate(10);
+
+        return ArtworkResource::collection($artworks);
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
+     * Display the specified artwork.
      */
     public function show(Artwork $artwork)
     {
-        //
-    }
+        // Ensure unpublished artworks aren't leaked via direct ID lookup
+        if (!$artwork->is_published) {
+            abort(404, 'Artwork not found or not published.');
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Artwork $artwork)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Artwork $artwork)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Artwork $artwork)
-    {
-        //
+        return new ArtworkResource($artwork);
     }
 }
