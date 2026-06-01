@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Artwork;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
