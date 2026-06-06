@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'netx' => [
+        'url' => env('NETX_API_URL'),
+        'key' => env('NETX_API_KEY'),
+    ],
+
 ];
